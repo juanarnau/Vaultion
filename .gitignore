@@ -1,0 +1,18 @@
+# Ignorar carpeta legacy
+legacy/
+
+# Ignorar archivos de base de datos y claves
+*.db
+*.key
+
+# Ignorar archivos de prueba
+test.py
+test_*.py
+estructura.txt
+
+# Ignorar compilados de Python
+__pycache__/
+*.pyc
+
+# Ignorar archivo de auditoría
+vaultion_auditor.py
