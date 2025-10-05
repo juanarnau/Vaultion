@@ -26,7 +26,6 @@ VAULTION/
 ├── KeyManagerWindow.py      # Gestión visual de claves
 ├── SettingsWindow.py        # Preferencias y mantenimiento
 ├── assets/                  # Iconos y recursos gráficos
-├── legacy/                  # Módulos obsoletos (excluidos por .gitignore)
 └── LICENSE.txt              # Licencia personalizada
 ```
 ---
@@ -43,3 +42,49 @@ Instalación de dependencias:
 ```bash
 pip install -r requirements.txt
 ```
+
+---
+
+## 🖥️ Ejecución
+Desde la raíz del proyecto:
+```
+python main.py
+```
+---
+
+## 📋 Licencia
+Este software está protegido por una Licencia de Uso Restringido.
+No se permite el uso comercial, institucional ni lucrativo sin autorización expresa del autor.
+Ver LICENSE.txt para más detalles.
+
+---
+
+## 📬 Contacto
+Juan Arnau
+📧 juan.arnau@outlook.es
+
+---
+
+## 🧪 Auditoría interna
+Vaultion incluye un módulo de diagnóstico (vaultion_auditor.py) que detecta:
+- Funciones no llamadas
+- Archivos no referenciados
+- Recursos huérfanos
+Ejecuta:
+```
+python vaultion_auditor.py
+```
+
+## 🛡️ Seguridad
+- Cifrado con clave USB física
+- Firma digital de claves
+- Reparación automática de base de datos
+- No se almacenan contraseñas en texto plano
+
+## 🧩 Contribuciones
+Este proyecto no acepta contribuciones externas sin autorización previa.
+Para propuestas técnicas o licencias comerciales, contacta directamente con el autor.
+
+
+
+
