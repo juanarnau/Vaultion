@@ -1,3 +1,7 @@
+# Copyright © 2025 Juan Arnau
+# Licencia de uso restringido – ver LICENSE.txt
+# Juan Arnau
+ 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QMessageBox
 from PySide6.QtCore import Qt
 from VaultDBManager import get_entries

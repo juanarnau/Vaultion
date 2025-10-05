@@ -1,3 +1,7 @@
+# Copyright © 2025 Juan Arnau
+# Licencia de uso restringido – ver LICENSE.txt
+# Juan Arnau
+ 
 from PySide6.QtWidgets import QApplication, QSplashScreen
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, QTimer

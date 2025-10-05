@@ -1,3 +1,7 @@
+# Copyright © 2025 Juan Arnau
+# Licencia de uso restringido – ver LICENSE.txt
+# Juan Arnau
+ 
 import os
 from pathlib import Path
 from getpass import getpass

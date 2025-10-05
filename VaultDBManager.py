@@ -1,3 +1,7 @@
+# Copyright © 2025 Juan Arnau
+# Licencia de uso restringido – ver LICENSE.txt
+# Juan Arnau
+ 
 import sqlite3
 from pathlib import Path
 from datetime import datetime

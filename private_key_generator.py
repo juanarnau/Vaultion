@@ -1,3 +1,7 @@
+# Copyright © 2025 Juan Arnau
+# Licencia de uso restringido – ver LICENSE.txt
+# Juan Arnau
+ 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from pathlib import Path
