@@ -16,7 +16,7 @@
 ---
 
 ## 🧠 Arquitectura del proyecto
-
+```
 VAULTION/
 ├── main.py                  # Punto de entrada
 ├── vaultion_boot.py         # Carga y verificación de clave USB
@@ -28,7 +28,7 @@ VAULTION/
 ├── assets/                  # Iconos y recursos gráficos
 ├── legacy/                  # Módulos obsoletos (excluidos por .gitignore)
 └── LICENSE.txt              # Licencia personalizada
-
+```
 ---
 
 ## 🔧 Requisitos
