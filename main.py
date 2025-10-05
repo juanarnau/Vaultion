@@ -50,10 +50,6 @@ def confirmar_salida():
     if respuesta == QMessageBox.Yes:
         app.quit()
 
-# 🔗 Conectar botón de salida con confirmación
-unlock.btn_exit.clicked.disconnect()
-unlock.btn_exit.clicked.connect(confirmar_salida)
-
 # 🚀 Ejecutar aplicación
 sys.exit(app.exec())
 
