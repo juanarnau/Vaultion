@@ -14,7 +14,7 @@ class SettingsWindow(QWidget):
         super().__init__()
         self.setWindowTitle("⚙️ Configuración de Vaultion")
         self.setFixedSize(500, 400)
-        self.setStyleSheet("background-color: #1e1e1e; color: #ffffff; font-size: 14px;")
+        #self.setStyleSheet("background-color: #1e1e1e; color: #ffffff; font-size: 14px;")
 
         self.raw_key = raw_key
         self.owner_id = hashlib.sha256(raw_key).hexdigest().upper()[:16]
@@ -24,7 +24,7 @@ class SettingsWindow(QWidget):
         # Identidad
         identity_label = QLabel(f"🧬 Propietario actual: {self.owner_id}")
         identity_label.setAlignment(Qt.AlignCenter)
-        identity_label.setStyleSheet("font-size: 16px; color: #00ff99;")
+        #identity_label.setStyleSheet("font-size: 16px; color: #00ff99;")
         layout.addWidget(identity_label)
 
         # Botones

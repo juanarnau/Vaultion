@@ -2,8 +2,8 @@
 # Licencia de uso restringido – ver LICENSE.txt
 # Juan Arnau
  
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QMessageBox
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QMessageBox, QVBoxLayout
+from PySide6.QtCore import Qt, QTimer
 import sys
 from VaultDBManager import derive_key, initialize_database
 from vaultion_boot import boot_vaultion
@@ -15,7 +15,6 @@ from DiagnosticsWindow import DiagnosticsWindow
 from PySide6.QtGui import QIcon
 from pathlib import Path
 from vaultion_boot import detect_usb_path, create_new_key
-from PySide6.QtCore import QTimer
 from vaultion_boot import get_database_path
 from VaultDBManager import initialize_database
 
@@ -28,42 +27,65 @@ class UnlockScreen(QWidget):
         self.setWindowTitle("Vaultion — Desbloqueo USB")
         icon_path = Path(__file__).parent / "icon.ico"
         self.setWindowIcon(QIcon(str(icon_path)))
-
         self.setFixedSize(500, 300)
-        self.setStyleSheet("background-color: #121212; color: #ffffff; font-size: 16px;")
+
         layout = QVBoxLayout()
 
+        # 🔐 Mensaje de estado
         self.status_label = QLabel("🔒 Inserta tu USB para desbloquear Vaultion")
         self.status_label.setAlignment(Qt.AlignCenter)
-        self.status_label.setStyleSheet("font-size: 18px; font-weight: bold;")
+        self.status_label.setObjectName("statusLabel")
         layout.addWidget(self.status_label)
 
+        # 🚀 Mensaje de bienvenida
         self.welcome_label = QLabel("🚀 Bienvenido a Vaultion")
         self.welcome_label.setAlignment(Qt.AlignCenter)
-        self.welcome_label.setStyleSheet("color: #00ff99; font-size: 16px;")
+        self.welcome_label.setObjectName("welcomeLabel")
         layout.addWidget(self.welcome_label)
 
-        # Botones del dashboard
+        # 🧩 Botones del dashboard
         self.btn_keys = QPushButton("🔑 Gestionar claves")
         self.btn_db = QPushButton("📁 Abrir base de datos")
         self.btn_diag = QPushButton("🧪 Diagnóstico")
         self.btn_config = QPushButton("⚙️ Configuración")
 
         for btn in [self.btn_keys, self.btn_db, self.btn_config, self.btn_diag]:
-            btn.setStyleSheet("padding: 10px; font-size: 15px;")
             btn.setVisible(False)
             layout.addWidget(btn)
 
+        layout.addStretch()
+
+        # ❌ Botón de salida
+        self.btn_exit = QPushButton("❌ Salir de Vaultion")
+        self.btn_exit.setObjectName("exitButton")
+        self.btn_exit.clicked.connect(self.close)
+        layout.addWidget(self.btn_exit)
+
         self.setLayout(layout)
 
-        # Conectar botones
+        # 🔗 Conectar botones
         self.btn_keys.clicked.connect(self.open_key_manager)
         self.btn_db.clicked.connect(self.open_database)
         self.btn_diag.clicked.connect(self.open_diagnostics)
         self.btn_config.clicked.connect(self.open_settings)
 
-        # Ejecutar verificación USB después de mostrar la ventana
+        # ⏱️ Ejecutar verificación USB después de mostrar la ventana
         QTimer.singleShot(100, self.check_usb)
+
+    def closeEvent(self, event):
+        respuesta = QMessageBox.question(
+            self,
+            "Confirmar salida",
+            "¿Estás seguro de que quieres salir de Vaultion?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if respuesta == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
+    def close_app(self):
+        QApplication.quit()
 
     def check_usb(self):
         key_file = boot_vaultion()
@@ -77,6 +99,7 @@ class UnlockScreen(QWidget):
                 self.key = derive_key(raw_key)
                 initialize_database(db_path)
                 self.status_label.setText("✅ USB autorizado. Accediendo...")
+                self.status_label.setStyleSheet("color: #00ff99; font-size: 16px;")
                 self.show_dashboard_buttons()
             except Exception as e:
                 self.status_label.setText("❌ Error al procesar la clave.")
