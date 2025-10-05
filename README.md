@@ -16,14 +16,29 @@
 ---
 
 ## 🧠 Arquitectura del proyecto
-- **VAULTION/ ├── main.py                  
-- **Punto de entrada ├── vaultion_boot.py         
-- **# Carga y verificación de clave USB ├── VaultDBManager.py        
-- **# Acceso y reparación de base de datos ├── UnlockScreen.py          
-- **# Pantalla de desbloqueo ├── AddEntryDialog.py        
-- **# Diálogo para añadir entradas ├── KeyManagerWindow.py      
-- **# Gestión visual de claves ├── SettingsWindow.py        
-- **# Preferencias y mantenimiento ├── assets/                  
-- **# Iconos y recursos gráficos ├── legacy/                  
-- **# Módulos obsoletos (excluidos por .gitignore) └── LICENSE.txt              
-- **# Licencia personalizada
+- **VAULTION  /main.py**                 
+- **Punto de entrada  /vaultion_boot.py**         
+- **Carga y verificación de clave USB  /VaultDBManager.py**       
+- **Acceso y reparación de base de datos  /UnlockScreen.py**          
+- **Pantalla de desbloqueo  /AddEntryDialog.py**       
+- **Diálogo para añadir entradas  /KeyManagerWindow.py**      
+- **Gestión visual de claves  /SettingsWindow.py**        
+- **Preferencias y mantenimiento  /assets/**                  
+- **Iconos y recursos gráficos  /legacy/**                  
+- **Módulos obsoletos (excluidos por .gitignore)  /LICENSE.txt**              
+- **Licencia personalizada**
+
+---
+
+## 🔧 Requisitos
+
+- Python 3.11+
+- PySide6
+- cryptography
+- sqlite3 (incluido en Python estándar)
+
+Instalación de dependencias:
+
+```bash
+pip install -r requirements.txt
+```
