@@ -57,6 +57,7 @@ def list_keys():
     keys = load_authorized_keys()
     for i, entry in enumerate(keys):
         if entry.get("comment"):
+            pass
 
 def export_key_by_index(index, filepath):
     keys = load_authorized_keys()
