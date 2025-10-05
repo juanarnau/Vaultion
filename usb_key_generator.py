@@ -45,7 +45,6 @@ def save_key_file(usb_path: Path, key_data: dict):
     key_file = usb_path / "vaultion.key"
     with open(key_file, "w", encoding="utf-8") as f:
         json.dump(key_data, f, indent=2)
-    print(f"✅ Clave guardada en: {key_file}")
 
 def register_usb(usb_path: str, usb_id: str, alias: str):
     private_key = load_private_key(PRIVATE_KEY_PATH)

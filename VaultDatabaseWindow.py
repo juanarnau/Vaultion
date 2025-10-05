@@ -59,12 +59,9 @@ class VaultDatabaseWindow(QWidget):
         self.table.setRowCount(0)
         try:
             entries = get_entries(self.key, owner_id=self.owner_id)
-            print("📥 Obteniendo entradas...")
-            print(f"🔍 Entradas encontradas: {len(entries)}")
 
             for i, entry in enumerate(entries):
                 self.table.insertRow(i)
-                print(f"🔍 Procesando entrada ID {entry.get('id')} — Servicio: {entry.get('service')}")
                 try:
                     if not isinstance(entry["encrypted_password"], bytes):
                         raise TypeError("Campo 'encrypted_password' no es bytes")
@@ -135,7 +132,6 @@ class VaultDatabaseWindow(QWidget):
             self.load_entries()
 
     def handle_cell_edit(self, row, column):
-        print(f"✏️ Editando celda en fila {row}, columna {column}")
         try:
             def safe_text(r, c):
                 item = self.table.item(r, c)
@@ -158,7 +154,6 @@ class VaultDatabaseWindow(QWidget):
             QMessageBox.critical(self, "Error", f"No se pudo guardar el cambio:\n{e}")
 
     def save_changes(self):
-        print("💾 Guardando cambios...")
         try:
             for row in range(self.table.rowCount()):
                 def safe_text(col):

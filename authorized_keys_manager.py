@@ -25,7 +25,6 @@ def add_key_extended(alias, public_key, usb_id, origin="usb", comment=""):
     # Verificar si ya existe una clave con ese usb_id
     for entry in keys:
         if entry["usb_id"] == usb_id:
-            print(f"⚠️ Ya existe una clave registrada con el ID: {usb_id}")
             return False
 
     new_entry = {
@@ -39,7 +38,6 @@ def add_key_extended(alias, public_key, usb_id, origin="usb", comment=""):
 
     keys.append(new_entry)
     save_authorized_keys(keys)
-    print(f"✅ Clave '{alias}' registrada correctamente.")
     return True
 
 def remove_key_by_index(index):
@@ -47,10 +45,8 @@ def remove_key_by_index(index):
     if 0 <= index < len(keys):
         removed = keys.pop(index)
         save_authorized_keys(keys)
-        print(f"🗑️ Clave eliminada: {removed['alias']} ({removed['usb_id']})")
         return True
     else:
-        print(f"⚠️ Índice inválido: {index}")
         return False
 
 def is_key_authorized(public_key):
@@ -60,17 +56,13 @@ def is_key_authorized(public_key):
 def list_keys():
     keys = load_authorized_keys()
     for i, entry in enumerate(keys):
-        print(f"{i}. 🔑 {entry['alias']} — USB: {entry['usb_id']} — Origen: {entry['origin']} — Fecha: {entry['registered_at']}")
         if entry.get("comment"):
-            print(f"   📝 {entry['comment']}")
 
 def export_key_by_index(index, filepath):
     keys = load_authorized_keys()
     if 0 <= index < len(keys):
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(keys[index]["public_key"])
-        print(f"📤 Clave exportada a: {filepath}")
         return True
     else:
-        print(f"⚠️ Índice inválido: {index}")
         return False

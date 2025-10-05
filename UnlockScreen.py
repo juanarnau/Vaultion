@@ -66,9 +66,7 @@ class UnlockScreen(QWidget):
         QTimer.singleShot(100, self.check_usb)
 
     def check_usb(self):
-        print("🔍 Ejecutando check_usb")
         key_file = boot_vaultion()
-        print(f"🔍 Resultado de boot_vaultion(): {key_file}")
         db_path = get_database_path()
 
         if key_file and key_file != "invalid":
@@ -121,7 +119,6 @@ class UnlockScreen(QWidget):
         self.btn_diag.setVisible(True)
 
     def open_key_manager(self):
-        print("🔑 Abriendo gestor de claves...")
         self.key_window = KeyManagerWindow()
         self.key_window.show()
 
@@ -129,7 +126,6 @@ class UnlockScreen(QWidget):
         try:
             self.db_window = VaultDatabaseWindow(self.key, self.raw_key)
             self.db_window.show()
-            print("📁 Base de datos abierta correctamente.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"No se pudo abrir la base de datos:\n{e}")
 

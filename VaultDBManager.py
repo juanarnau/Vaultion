@@ -45,11 +45,6 @@ def decrypt_data(key: bytes, encrypted: bytes) -> str:
     tag = encrypted[16:32]
     ciphertext = encrypted[32:]
 
-    print("🔍 Nonce:", nonce)
-    print("🔍 Longitud del nonce:", len(nonce))
-    print("🔍 Tipo del nonce:", type(nonce))
-    print("🔍 ¿Está vacío?:", nonce == b"")
-    print("🧪 Usando decrypt_data con validación")
     cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
     return cipher.decrypt_and_verify(ciphertext, tag).decode()
 
@@ -92,13 +87,9 @@ def add_entry(key: bytes, service: str, username: str, password: str, notes: str
         ))
 
         conn.commit()
-        print(f"✅ Entrada añadida: {service} ({username})")
-        print("🔍 Tipo de encrypted_pw:", type(encrypted_pw), "Longitud:", len(encrypted_pw))
-        print("🔍 Tipo de encrypted_notes:", type(encrypted_notes), "Longitud:", len(encrypted_notes))
-        print("🔍 Preview nonce:", encrypted_pw[:16])
 
     except Exception as e:
-        print(f"❌ Error al añadir entrada: {e}")
+        pass
     finally:
         conn.close()
 
@@ -107,18 +98,14 @@ def sanitize_blob(blob):
 
 def safe_decrypt(blob, key: bytes) -> str:
     if not blob:
-        print("🛑 Blob vacío o None, no se descifra")
         return ""
     if not isinstance(blob, (bytes, bytearray)):
-        print(f"🛑 Tipo inválido: {type(blob)}")
         return ""
     if len(blob) < 32:
-        print(f"🛑 Blob demasiado corto: {len(blob)} bytes")
         return ""
     try:
         return decrypt_data(key, blob)
     except Exception as e:
-        print(f"⚠️ Error en safe_decrypt: {e}")
         return "❌ Error"
 
 # 📖 Leer entradas
@@ -151,17 +138,12 @@ def get_entries(key: bytes, owner_id: str = "default"):
 
         # 🧼 Reconversión si no son bytes
         if not isinstance(pw_blob, bytes):
-            print("❌ encrypted_password no es bytes, reconvirtiendo...")
             pw_blob = sanitize_blob(row[3])
 
         if notes_blob and not isinstance(notes_blob, bytes):
-            print("❌ encrypted_notes no es bytes, reconvirtiendo...")
             notes_blob = row[4]  # sin sanitizar, lo maneja safe_decrypt
-            print("🔍 Tipo real tras conversión:", type(pw_blob))
         # 🔓 Descifrado seguro
         try:
-            print("🔍 Tipo final antes de decrypt_data:", type(pw_blob))
-            print("🔍 Longitud final:", len(pw_blob))
 
             decrypted_pw = decrypt_data(key, pw_blob)
             decrypted_notes = safe_decrypt(notes_blob, key)
@@ -169,7 +151,6 @@ def get_entries(key: bytes, owner_id: str = "default"):
         except Exception as e:
             decrypted_pw = "❌ Error"
             decrypted_notes = "❌ Error"
-            print(f"⚠️ Error al descifrar entrada ID {entry_id}: {e}")
 
         entries.append({
             "id": entry_id,
@@ -196,14 +177,12 @@ def repair_empty_notes_entries(db_path: str, key: bytes):
     repaired = 0
     for entry_id, blob in entries:
         if not blob or not isinstance(blob, (bytes, bytearray)) or len(blob) < 32:
-            print(f"🔧 Reparando entrada ID {entry_id} — notas cifradas inválidas")
             fixed_blob = encrypt_data(key, "-")
             cursor.execute("UPDATE entries SET encrypted_notes = ? WHERE id = ?", (fixed_blob, entry_id))
             repaired += 1
 
     conn.commit()
     conn.close()
-    print(f"✅ Reparación completada: {repaired} entradas corregidas")
 
 # 🔄 Actualizar entrada
 def update_entry(entry_id, service, username, password, notes, key):
@@ -220,18 +199,14 @@ def update_entry(entry_id, service, username, password, notes, key):
         WHERE id = ?
     """, (service, username, encrypted_password, encrypted_notes, entry_id))
     conn.commit()
-    print(f"🔄 Filas modificadas: {conn.total_changes}")
     conn.close()
 
 def sanitize_blob(blob):
     if isinstance(blob, memoryview):
-        print("⚠️ Convertido desde memoryview")
         return blob.tobytes()
     if isinstance(blob, str):
-        print("⚠️ Convertido desde str")
         return bytes(blob, 'latin1')
     if not isinstance(blob, bytes):
-        print(f"⚠️ Convertido desde {type(blob)}")
         return bytes(blob)
     return blob
 
@@ -242,7 +217,6 @@ def delete_entry(entry_id: int):
     cursor.execute("DELETE FROM vault_entries WHERE id = ?", (entry_id,))
     conn.commit()
     conn.close()
-    print(f"🗑️ Entrada eliminada: ID {entry_id}")
 
 # 🔍 Verificar existencia
 def entry_exists(service: str, username: str) -> bool:
@@ -279,47 +253,34 @@ def rotate_master_key(old_key: bytes, new_key: bytes):
 
     conn.commit()
     conn.close()
-    print("🔄 Todas las entradas han sido re-cifradas con la nueva clave.")
 
 # 🧯 Copia de seguridad
 def backup_database():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_path = VAULTION_HOME / f"vaultion_backup_{timestamp}.db"
     shutil.copy(DB_PATH, backup_path)
-    print(f"🧯 Copia de seguridad creada en: {backup_path}")
 
 def inspect_encrypted_entry(entry_id: int, encrypted_pw: bytes, encrypted_notes: bytes = b""):
-    print(f"\n🔍 Inspección de entrada ID {entry_id}")
 
     def inspect_blob(label: str, blob: bytes):
-        print(f"\n📦 Campo: {label}")
-        print(f"🔹 Tipo: {type(blob)}")
-        print(f"🔹 Longitud total: {len(blob)}")
 
         if not isinstance(blob, bytes):
-            print("❌ No es tipo bytes")
             return
 
         if len(blob) < 32:
-            print("❌ Bloque cifrado demasiado corto")
             return
 
         nonce = blob[:16]
         tag = blob[16:32]
         ciphertext = blob[32:]
 
-        print(f"🔸 Nonce: {nonce}")
-        print(f"🔸 Tag: {tag}")
-        print(f"🔸 Ciphertext (preview): {ciphertext[:16]}...")
-        print(f"🔸 Longitudes → nonce: {len(nonce)}, tag: {len(tag)}, ciphertext: {len(ciphertext)}")
 
     inspect_blob("Contraseña cifrada", encrypted_pw)
     if encrypted_notes:
         inspect_blob("Notas cifradas", encrypted_notes)
     else:
-        print("\n📦 Campo: Notas cifradas — vacío")
+        pass
 
-    print("✅ Inspección completada\n")
 
 # 🧱 Inicializar base de datos
 def initialize_database(db_path):

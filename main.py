@@ -16,7 +16,6 @@ app = QApplication([])
 
 # 🔐 Validar o generar clave desde USB
 key_path = boot_vaultion()
-print("🔍 Resultado de boot_vaultion():", key_path)
 
 # 📁 Obtener ruta de base de datos y crear tabla si no existe
 db_path = get_database_path()

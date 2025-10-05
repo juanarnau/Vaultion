@@ -24,7 +24,6 @@ def generate_private_key(password: str = None, bits: int = 2048):
     with open(key_path, "wb") as f:
         f.write(pem)
 
-    print(f"✅ Clave privada generada y guardada en: {key_path.resolve()}")
 
 # Ejemplo de uso
 if __name__ == "__main__":

@@ -26,7 +26,6 @@ def detect_usb_drive():
             if GetDriveType(drive) == DRIVE_REMOVABLE:
                 return Path(drive)
     except Exception as e:
-        print(f"⚠️ Error al detectar USB: {e}")
     return None
 
 def load_private_key(path):
@@ -58,23 +57,18 @@ def save_key_file(usb_path: Path, key_data: dict):
     key_file = usb_path / "vaultion.key"
     with open(key_file, "w", encoding="utf-8") as f:
         json.dump(key_data, f, indent=2)
-    print(f"✅ Clave guardada en: {key_file}")
 
 def setup_usb():
-    print("🔍 Buscando USB...")
     usb_path = detect_usb_drive()
     if not usb_path:
-        print("❌ No se detectó ningún USB conectado.")
         return
 
-    print(f"📁 USB detectado en: {usb_path}")
     alias = input("📝 Alias para esta clave (ej. VaultionTestKey): ").strip()
     usb_id = input("🔢 Identificador único del USB (ej. USB_ID_TEST_001): ").strip()
 
     try:
         private_key = load_private_key(PRIVATE_KEY_PATH)
     except Exception as e:
-        print(f"❌ Error al cargar la clave privada: {e}")
         return
 
     message = generate_message(usb_id)
@@ -90,7 +84,6 @@ def setup_usb():
 
     save_key_file(usb_path, key_data)
     add_key(alias, public_key, usb_id)
-    print("🎉 USB registrado y autorizado correctamente.")
 
 if __name__ == "__main__":
     setup_usb()

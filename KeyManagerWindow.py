@@ -106,7 +106,6 @@ class KeyManagerWindow(QWidget):
         if filename:
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(entry["public_key"])
-            print(f"📤 Clave exportada a: {filename}")
 
     def export_to_local_keyfile(self, entry):
         with open("vaultion.key", "w", encoding="utf-8") as f:
@@ -120,7 +119,6 @@ class KeyManagerWindow(QWidget):
         with open(AUTHORIZED_KEYS_PATH, "w", encoding="utf-8") as f:
             json.dump(keys, f, indent=2)
         self.load_keys()
-        print(f"🗑️ Clave revocada: {removed['alias']}")
 
     def generate_rsa_key(self):
         alias, ok = QInputDialog.getText(self, "Alias de clave", "Introduce un alias para la nueva clave:")

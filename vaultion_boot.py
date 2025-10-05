@@ -59,7 +59,6 @@ def verify_signature_and_authorization(message, signature_hex, public_key_pem):
     except InvalidSignature:
         return False
     except Exception as e:
-        print(f"❌ Error en verificación: {e}")
         return False
 
 def boot_vaultion():
@@ -70,7 +69,6 @@ def boot_vaultion():
         sys.exit(1)
 
     if not key_path.exists():
-        print(f"🔑 No se encontró clave en {key_path}. Generando nueva...")
         return generate_new_key(key_path)
 
     if not validate_key(key_path):
@@ -83,16 +81,12 @@ def boot_vaultion():
         if reply == QMessageBox.Yes:
             try:
                 key_path.unlink()
-                print("🗑️ Clave inválida eliminada.")
             except Exception as e:
-                print("⚠️ Error al eliminar la clave:", e)
                 sys.exit(1)
             return generate_new_key(key_path)
         else:
-            print("❌ Operación cancelada por el usuario.")
             sys.exit(0)
 
-    print(f"🔐 Clave válida encontrada en USB: {key_path}")
     return key_path
 
 def get_database_path():
@@ -149,7 +143,6 @@ def create_new_key(path: Path):
     with open(path, "w") as f:
         json.dump(payload, f, indent=4)
 
-    print(f"✅ Clave Vaultion creada en: {path}")
 
 def validate_key(key_path):
     try:
@@ -195,7 +188,6 @@ def generate_new_key(target_path):
     with open(target_path, "w", encoding="utf-8") as f:
         json.dump(key_data, f, indent=2)
 
-    print(f"✅ Clave Vaultion generada en: {target_path}")
     return target_path
 
 def boot_vaultion():
@@ -206,7 +198,6 @@ def boot_vaultion():
         sys.exit(1)
 
     if not key_path.exists():
-        print(f"🔑 No se encontró clave en {key_path}. Generando nueva...")
         return generate_new_key(key_path)
 
     if not validate_key(key_path):
@@ -219,16 +210,12 @@ def boot_vaultion():
         if reply == QMessageBox.Yes:
             try:
                 key_path.unlink()
-                print("🗑️ Clave inválida eliminada.")
             except Exception as e:
-                print("⚠️ Error al eliminar la clave:", e)
                 sys.exit(1)
             return generate_new_key(key_path)
         else:
-            print("❌ Operación cancelada por el usuario.")
             sys.exit(0)
 
-    print(f"🔐 Clave válida encontrada en USB: {key_path}")
     return key_path
 
 def detect_usb_key():

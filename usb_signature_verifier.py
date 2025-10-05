@@ -29,12 +29,10 @@ def verify_signature(message: str, signature_b64: str, public_key_pem: str) -> b
     except InvalidSignature:
         return False
     except Exception as e:
-        print(f"Error al verificar la firma: {e}")
         return False
 
 def verify_signature_and_authorization(message: str, signature_b64: str, public_key_pem: str) -> bool:
     if not is_key_authorized(public_key_pem):
-        print("❌ Clave no autorizada. USB rechazado.")
         return False
 
     try:
@@ -47,11 +45,8 @@ def verify_signature_and_authorization(message: str, signature_b64: str, public_
             padding.PKCS1v15(),
             hashes.SHA256()
         )
-        print("✅ Firma válida y clave autorizada.")
         return True
     except InvalidSignature:
-        print("❌ Firma inválida.")
         return False
     except Exception as e:
-        print(f"⚠️ Error en la verificación: {e}")
         return False
