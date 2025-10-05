@@ -6,10 +6,10 @@ from PySide6.QtWidgets import QApplication, QSplashScreen
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, QTimer
 import sys
-
 from vaultion_boot import boot_vaultion, get_database_path
 from VaultDBManager import initialize_database
 from UnlockScreen import UnlockScreen
+
 
 # 🧠 Crear aplicación Qt
 app = QApplication([])
