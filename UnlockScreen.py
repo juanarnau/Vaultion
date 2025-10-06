@@ -14,7 +14,7 @@ from pathlib import Path
 from DiagnosticsWindow import DiagnosticsWindow
 from PySide6.QtGui import QIcon
 from pathlib import Path
-from vaultion_boot import detect_usb_path, create_new_key
+from vaultion_boot import detect_usb_key, generate_new_key
 from vaultion_boot import get_database_path
 from VaultDBManager import initialize_database
 
@@ -22,13 +22,15 @@ KEY_PATH = Path("D:/vaultion.key")  # Ajusta según tu ruta real
 KEY_FILE_PATH = Path("vaultion.key")
 
 class UnlockScreen(QWidget):
-    def __init__(self):
+    def __init__(self, recurso_empaquetado):
         super().__init__()
         self.setWindowTitle("Vaultion — Desbloqueo USB")
-        icon_path = Path(__file__).parent / "icon.ico"
-        self.setWindowIcon(QIcon(str(icon_path)))
-        self.setFixedSize(500, 300)
 
+        # 🖼️ Cargar icono desde recurso empaquetado
+        icon_path = recurso_empaquetado("assets/icon.ico")
+        self.setWindowIcon(QIcon(icon_path))
+
+        self.setFixedSize(500, 300)
         layout = QVBoxLayout()
 
         # 🔐 Mensaje de estado
@@ -71,6 +73,18 @@ class UnlockScreen(QWidget):
 
         # ⏱️ Ejecutar verificación USB después de mostrar la ventana
         QTimer.singleShot(100, self.check_usb)
+
+    def closeEvent(self, event):
+        respuesta = QMessageBox.question(
+            self,
+            "Confirmar salida",
+            "¿Estás seguro de que quieres salir de Vaultion?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if respuesta == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
     def closeEvent(self, event):
         respuesta = QMessageBox.question(
