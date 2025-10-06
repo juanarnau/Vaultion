@@ -4,6 +4,7 @@ legacy/
 # Ignorar archivos de base de datos y claves
 *.db
 *.key
+authorized_keys.json
 
 # Ignorar archivos de prueba
 test.py
@@ -16,3 +17,5 @@ __pycache__/
 
 # Ignorar archivo de auditoría
 vaultion_auditor.py
+
+
